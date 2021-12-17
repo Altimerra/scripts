@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+
+# __   _______ ____  
+# \ \ / /_   _|  _ \ 
+#  \ V /  | | | | | |
+#   | |   | | | |_| |
+#   |_|   |_| |____/ 
+# Custom youtube downloader script powered by yt-dlp
+
+link=""
+optString="--add-metadata --downloader aria2c"
+quality="720"
+outputFormat=""
+formatString=""
+noplaylist=""
+file=ytd-opts
+
+parse() {  
+local argument="$1"
+case "$argument" in
+  360|480|720|1080)
+    quality="$argument"
+    ;;
+  playlist)
+    optString="${optString} --download-archive downloaded"
+    noplaylist=2
+    ;;
+  album)
+    outputFormat="-o '%(playlist_index)s-%(title)s.%(ext)s'"
+    optString="${optString} --download-archive downloaded"
+    noplaylist=2
+    ;;
+  audio)
+    optString="${optString} -x --embed-thumbnail"
+    formatString=2
+    ;;
+  text)
+    optString="${optString} --no-playlist -a"
+    ;;
+  *)
+    link="${link} $argument"
+    ;;
+  esac
+}  
+
+if [[ -z "$1" ]] && [[ -f "$file" ]]; 
+then 
+  # optString="${optString} --download-archive downloaded"
+  while IFS= read -r line;
+  do 
+    parse "$line" 
+  done < "$file"
+elif [[ -z "$1" ]] && [[ ! -f "$file" ]];
+then
+  echo "Usage: ytd [options] [link] or ytd (in a controlled directory)"
+  exit 0
+else
+  for i; do parse "$i"; done
+  [[ -z "$link" ]] && echo "Usage: ytd [options] [link] or ytd (in a controlled directory)" && exit 0
+fi
+
+
+[[ formatString -eq 2 ]] && formatString="" || formatString="-f 'bestvideo[ext=?webm][height<=$quality]+bestaudio[ext=?webm]'"
+[[ noplaylist -eq 2 ]] && noplaylist="" || noplaylist="--no-playlist"
+
+eval "yt-dlp $formatString $outputFormat $noplaylist $optString $link"
+
+

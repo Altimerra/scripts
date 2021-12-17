@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+byobu new-session -d -s Main
+byobu send-keys "task" Enter
+byobu split-window -h
+byobu select-pane -t 0
+byobu split-window -v
+byobu send-keys "calcurse" Enter
+byobu select-pane -t 2
+byobu send-keys "jrnl -from yesterday" Enter
+byobu attach -t Main

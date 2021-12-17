@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+count="$1"
+cameraDir="/home/harindu/Data/Shared-Media/Photos/DCIM/Camera"
+currentDir="$( pwd )"
+
+cd "$cameraDir"
+ls | grep IMG | tail -n "$count" | xargs cp -t "$currentDir" 
+

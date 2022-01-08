@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+# uses jpegoptim, only works on jpegs
+
+[[ -z "$1" ]] && echo "Usage: pdfer [filename]" && exit 0 
+
+filename="$1"
+files=()
+cleanfiles=()
+textcleanerIntensity="40"
+
+for file in * 
+do
+  mimetype=$( file -b --mime-type "$file" )
+  [[ $mimetype == image/* ]] && files+=( "$file" )
+done
+
+for file in "${files[@]}"
+do
+  textcleaner -f "$textcleanerIntensity" "$file" "clean-$file"
+  cleanfiles+=( "clean-$file" )
+done
+
+jpegoptim -q -S 100 "${cleanfiles[@]}"
+img2pdf -S A4 --output "$filename" "${cleanfiles[@]}"
+rm "${cleanfiles[@]}"
+

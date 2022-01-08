@@ -2,12 +2,12 @@
 
 # uses jpegoptim, only works on jpegs
 
-[[ -z "$1" ]] && echo "Usage: pdfer [filename]" && exit 0 
+[[ -z "$1" ]] && echo "Usage: pdfer [filename] [quality 1-100] [filter 1-100]" && exit 0 
+[[ -z "$2" ]] && jpegQuality="30" || jpegQuality="$2"
+[[ -z "$3" ]] && textcleanerIntensity="40" || textcleanerIntensity="$3"
 
 filename="$1"
 files=()
-cleanfiles=()
-textcleanerIntensity="40"
 
 for file in * 
 do
@@ -15,13 +15,18 @@ do
   [[ $mimetype == image/* ]] && files+=( "$file" )
 done
 
+mkdir -p originals
+cp "${files[@]}" originals
+
+jpegoptim -q -m "$jpegQuality" "${files[@]}"
+
 for file in "${files[@]}"
 do
-  textcleaner -f "$textcleanerIntensity" "$file" "clean-$file"
-  cleanfiles+=( "clean-$file" )
+  textcleaner -f "$textcleanerIntensity" "$file" "$file"
 done
 
-jpegoptim -q -S 100 "${cleanfiles[@]}"
-img2pdf -S A4 --output "$filename" "${cleanfiles[@]}"
-rm "${cleanfiles[@]}"
+img2pdf -S A4 --output "$filename" "${files[@]}"
+
+rm "${files[@]}"
+
 

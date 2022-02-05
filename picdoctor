@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# Possible to use FILE instead of exiftool
+
 files=(?(*.jpg|*.gif|*.png|*.jpeg))
 sizes=( $( exiftool -S -T -ImageSize ?(*.jpg|*.gif|*.png|*.jpeg) ) )
 phone=()

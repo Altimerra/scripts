@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+cd ~
+mkdir -p Config
+mkdir -p Scripts
+
+sudo pacman -Syu
+sudo pacman -S --needed \
+zsh \
+zsh-autosuggestions \
+zsh-syntax-highlighting \
+zsh-history-substring-search \
+alacritty \
+byobu \
+exa \
+zoxide \
+emacs \
+neovim \
+mpv \
+sxiv \
+feh \
+gthumb \
+zathura \
+zathura-pdf-mupdf \
+cmus \
+qutebrowser \
+brave-browser \
+aria2 \
+atool \
+btop \
+bat \
+syncthing \
+unison \
+stow \
+gcc \
+ttf-jetbrains-mono \

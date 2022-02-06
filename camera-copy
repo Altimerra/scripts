@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 count="$1"
-cameraDir="/home/harindu/Data/Shared-Media/Photos/DCIM/Camera"
+cameraDir=$CAMERA_DIR
 currentDir="$( pwd )"
 
 cd "$cameraDir"

@@ -1,11 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/bash
 
 battery="$( acpi -b | grep -P -o '[0-9]+(?=%)' )"
 charging="$( acpi -b | grep -P -o 'Charging|Discharging' )"
 
-if [[ ($battery -le 20) && $charging=="Discharging" ]]
+if [[ ($battery -le 20) && ($charging=="Discharging") ]]
 then
-    if [[ ($battery -le 10) && $charging=="Discharging" ]]
+	if [[ ($battery -le 10) && ($charging=="Discharging") ]]
     then
         notify-send -u critical "Battery Critical"
     else
@@ -15,3 +15,5 @@ fi
 
 [[ ($battery -ge 80) && $charging=="Charging" ]] && \
     notify-send -u normal "Disconnect Charger"
+
+exit 0

@@ -1,0 +1,2 @@
+systemctl enable --user syncthing.service
+systemctl --user enable emacs

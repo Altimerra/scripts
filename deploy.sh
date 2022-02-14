@@ -1,6 +1,6 @@
 # TODO make this into a function
 # TODO refer to Config via env variable
-cd Config
+cd ~/Config
 for dir in *
 do
     mkdir -p ~/.config/$dir

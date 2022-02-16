@@ -1,19 +1,30 @@
 #!/usr/bin/bash
 
-battery="$( acpi -b | grep -P -o '[0-9]+(?=%)' )"
-charging="$( acpi -b | grep -P -o 'Charging|Discharging' )"
+while true
+do
+ battery="$( acpi -b | grep -P -o '[0-9]+(?=%)' )"
+ charging="$( acpi -b | grep -P -o 'Charging|Discharging' )"
 
-if [[ ($battery -le 20) && ($charging=="Discharging") ]]
-then
-	if [[ ($battery -le 10) && ($charging=="Discharging") ]]
+ if [[ $charging=="Discharging" ]]
+ then
+ 	if [[ ($battery -le 20) ]]
     then
-        notify-send -u critical "Battery Critical"
-    else
-        notify-send -u normal "Battery Low"
+        if [[ $battery -le 10 ]]
+        then
+            notify-send -u critical "Battery Critical"
+            sleep 30s
+        else
+            notify-send -u normal "Battery Low"
+            sleep 30s
+        fi
     fi
-fi
+ fi
 
-[[ ($battery -ge 80) && $charging=="Charging" ]] && \
-    notify-send -u normal "Disconnect Charger"
+ if  [[ $charging=="Charging" ]] && [[ $battery -ge 80 ]]
+ then
+     notify-send -u normal "Disconnect Charger"
+     sleep 30s
+ fi
 
-exit 0
+ sleep 5s
+done

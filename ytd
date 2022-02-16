@@ -9,7 +9,7 @@
 
 link=""
 optString="--add-metadata --downloader aria2c"
-quality="720"
+quality="1080"
 outputFormat=""
 formatString=""
 noplaylist=""

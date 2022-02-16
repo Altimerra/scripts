@@ -1,10 +1,8 @@
 #!/usr/bin/env zsh
 
 cd ~
-mkdir -p Config
-mkdir -p Scripts
 
-sudo pacman -Syu
+# sudo pacman -Syu
 sudo pacman -S --needed \
 zsh \
 zsh-autosuggestions \
@@ -17,6 +15,11 @@ zoxide \
 emacs \
 neovim \
 mpv \
+yt-dlp \
+youtube-dl \
+aria2 \
+mpd \
+ncmpcpp \
 sxiv \
 feh \
 gthumb \
@@ -34,3 +37,15 @@ unison \
 stow \
 gcc \
 ttf-jetbrains-mono \
+starship \
+yay \
+rofi \
+gcc \
+make \
+cmake \
+pkgconf
+
+sudo yay -S --needed \
+    nsxiv \
+    ytfzf \
+    dragon-drag-and-drop

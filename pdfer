@@ -25,7 +25,7 @@ do
   textcleaner -f "$textcleanerIntensity" "$file" "$file"
 done
 
-img2pdf -S A4 --output "$filename" "${files[@]}"
+img2pdf -S A4 --auto-orient --output "$filename" "${files[@]}"
 
 rm "${files[@]}"
 

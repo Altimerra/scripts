@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import subprocess
+import re
+from time import sleep
+
+while True:
+    status = subprocess.run(["acpi", "-b"], capture_output=True, encoding="UTF-8")
+    charging = re.search("Charging|Discharging", status.stdout).group()
+    charge = re.search("[0-9]+(?=%)", status.stdout).group()
+    charge = int(charge)
+
+    if charging=="Discharging" and charge <= 20 :
+        if charging=="Discharging" and charge <= 10 :
+            subprocess.run(["notify-send", "-u", "critical", "Battery Critical"])
+        else:
+            subprocess.run(["notify-send","Battery Low"])
+
+
+    if charging=="Charging" and charge >= 80 :
+        subprocess.run(["notify-send","Disconnect Charger"])
+
+    sleep(30)

@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# Dependencies: file grep bc
+
+images=("$( ls )")
+
+for i in "${images[@]}";do
+    echo "$i"
+    res=$( file "$i"  | grep -P -o "\d{2,5}x\d{2,5}" )
+    echo $res
+done
+
+: <<COMMENT
+for image in $images
+do
+    res=$( file "$image"  | grep -P -o "\d{2,5}x\d{2,5}" )
+    ratio=$( echo "scale=2; ${res#*x} / ${res%x*}" | bc )
+    #testratio(ratio)
+done
+if [[ $ratio -le 0.8 ]]
+then
+    echo "por"
+elif [[ $ratio -le 1.2 ]]
+then
+    echo "sq"
+else
+    echo "land"
+fi
+
+COMMENT

@@ -18,13 +18,12 @@ do
             sleep 30s
         fi
     fi
+ else
+     if [[ $battery -ge 80 ]]
+     then
+         notify-send -u normal "Disconnect Charger"
+         sleep 30s
+     fi
  fi
-
- if  [[ $charging=="Charging" ]] && [[ $battery -ge 80 ]]
- then
-     notify-send -u normal "Disconnect Charger"
-     sleep 30s
- fi
-
  sleep 5s
 done

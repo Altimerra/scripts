@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# Dependencies: file grep bc
+
+images=( ./*.jpg )
+
+for i in "${images[@]}"
+do
+    res=$( file "$i"  | grep -P -o "\d{2,5}x\d{2,5}" )
+    res1=${res#*x}
+    res2=${res%x*}
+    rat=$(( $res1 / $res2 ))
+    echo $res $rat
+done
+echo ${#images[@]}

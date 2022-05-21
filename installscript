@@ -10,8 +10,10 @@ zsh-syntax-highlighting \
 zsh-history-substring-search \
 alacritty \
 byobu \
+vifm \
 exa \
 zoxide \
+duf \
 emacs \
 neovim \
 mpv \
@@ -40,12 +42,19 @@ ttf-jetbrains-mono \
 starship \
 yay \
 rofi \
+figlet \
+neofetch \
 gcc \
 make \
 cmake \
+automake \
 pkgconf
 
 sudo yay -S --needed \
     nsxiv \
+    neo-matrix \
     ytfzf \
+    toilet \
+    dijo-bin \
+    neo-matrix-git \
     dragon-drag-and-drop

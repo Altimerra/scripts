@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# Dependencies: file grep bc
+
+files="$1"
+
+testratio(){
+    case $1 in
+        (-le 0.8) echo "portrait" ;;
+    esac
+}
+
+for element in "$files"
+do
+    res = $( file "$element"  | grep -P -o "\d{2,5}x\d{2,5}" )
+    ratio=$( echo "scale=2; ${res#*x} / ${res%x*}" | bc )
+    testratio(ratio)
+done

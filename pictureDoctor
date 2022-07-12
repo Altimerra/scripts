@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+from plumbum.cmd import find, xargs, file, grep, rev, cut, exiftool, mkdir, ln
+
+findfiles = find[".","-type","f","-print0"] | xargs ["-0","file","--mime-type"] | grep["-F","image/"] | rev | cut["-d", ":", "-f" "2-"] | rev
+files = findfiles().splitlines()
+resolution = exiftool["-T","-ImageSize"]
+resolutions = [[int(x) for x in line.split('x')] for line in resolution(*files).splitlines()]
+datadict = dict(zip(files,resolutions))
+
+def dictfilter(dictObj, callback):
+    newDict = dict()
+    # Iterate over all the items in dictionary
+    for (key, value) in dictObj.items():
+        # Check if item satisfies the given condition then add to new dict
+        if callback((key, value)):
+            newDict[key] = value
+    return newDict
+
+def createGroupFolder(dictObj, dirname):
+    makedir = mkdir["-p"]
+    makedir(dirname)
+    link = ln["--symbolic","--relative","-t",dirname]
+    link(*dictObj.keys())
+
+wideimages = dictfilter(datadict, lambda elem : elem[1][0]/elem[1][1] > 1.2)
+tallimages = dictfilter(datadict, lambda elem : elem[1][0]/elem[1][1] < 0.8)
+createGroupFolder(wideimages,"wideimages")
+createGroupFolder(tallimages,"tallimages")
+
+
+'''
+import subprocess
+import os
+
+files = {}
+tmpOut = open("tmpOut", "w")
+output = subprocess.call(["find", "-type", "f" ], stdout=tmpOut)
+
+# Fill the dictionary with the values we want
+with open("tmpOut") as infile:
+    for line in infile:
+        files[line.split('.')[0]] = line.split('.')[1]
+
+os.remove("tmpOut")
+
+print(files)
+#find -type f | xargs file --mime-type
+'''
